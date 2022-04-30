@@ -1,5 +1,8 @@
+import { IURLHistory } from "./urlHistory";
+import { IUser } from "./user";
+
 export interface IURL {
-  id: number;
+  id?: number;
   userId: number;
   name: string;
   url: string;
@@ -31,7 +34,8 @@ export interface IURL {
   tags: string[];
 
   ignoreSSL: boolean;
-
+  urlHistories?: IURLHistory[];
+  user?: IUser;
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date | null;

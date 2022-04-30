@@ -11,6 +11,9 @@ export interface IConfig {
 
   appTokenSecret: string;
   appTokenExpiry: string;
+
+  systemEmail: string;
+  systemEmailPassword: string;
 }
 
 const config = {
@@ -22,5 +25,7 @@ const config = {
   dbName: process.env.DB_DATABASE as string,
   appTokenSecret: process.env.APP_TOKEN_SECRET,
   appTokenExpiry: process.env.APP_TOKEN_EXPIRY,
+  systemEmail:process.env.SYSTEM_EMAIL,
+  systemEmailPassword:process.env.SYSTEM_EMAIL_PASSWORD
 };
 export default config;

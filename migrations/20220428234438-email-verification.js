@@ -1,38 +1,28 @@
 module.exports = {
   up: (queryInterface, Sequelize) =>
-    queryInterface.createTable("urlHistory", {
+    queryInterface.createTable("emailVerification", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      urlId: {
+      userId: {
         type: Sequelize.INTEGER,
         allowNull: true,
         references: {
           model: {
-            tableName: "url",
+            tableName: "user",
           },
           key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      responseTime: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
+      vCode: {
+        type: Sequelize.STRING,
       },
-      statusCode: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-        defaultValue: null,
-      },
-      passedAssert: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-      },
+      verified: { type: Sequelize.BOOLEAN, defaultValue: false },
       createdAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
@@ -47,5 +37,5 @@ module.exports = {
         defaultValue: null,
       },
     }),
-  down: (queryInterface) => queryInterface.dropTable("urlHistory"),
+  down: (queryInterface) => queryInterface.dropTable("emailVerification"),
 };

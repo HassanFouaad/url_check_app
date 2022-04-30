@@ -14,7 +14,7 @@ const sequelizeOptions = {
     idle: 10000,
     acquire: 20000,
   },
-  dialect: "mysql",
+  dialect: "postgres",
   define: {
     underscored: false,
     timestamps: true,

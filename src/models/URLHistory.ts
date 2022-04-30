@@ -37,8 +37,14 @@ const URLHistory = sequelize.define<URLHistoryInstance>(
     statusCode: {
       type: DataTypes.INTEGER,
       allowNull: true,
+      defaultValue: null,
     },
     passedAssert: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: null,
+    },
+    userNotified: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,

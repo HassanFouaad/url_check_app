@@ -21,7 +21,7 @@ const sequelizeOptions: Options = {
     idle: 10000,
     acquire: 20000,
   },
-  dialect: "mysql",
+  dialect: "postgres",
   logging: process.env.NODE_ENV === "production" ? false : false,
   define: {
     underscored: false,

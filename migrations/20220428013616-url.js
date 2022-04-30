@@ -31,6 +31,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
+      protocol: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       port: {
         type: Sequelize.INTEGER,
         allowNull: true,
@@ -67,7 +71,7 @@ module.exports = {
         allowNull: true,
       },
       tags: {
-        type: Sequelize.JSON,
+        type: Sequelize.ARRAY(Sequelize.STRING),
         allowNull: true,
       },
       ignoreSSL: {

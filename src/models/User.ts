@@ -16,16 +16,19 @@ const User = sequelize.define<UserInstance>(
       primaryKey: true,
       type: DataTypes.INTEGER,
     },
-
     password: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
     username: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
-
+    email: { type: DataTypes.STRING, allowNull: false },
+    emailVerified: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,

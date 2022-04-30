@@ -1,6 +1,6 @@
 - This project was created using Nodejs, Typescript, Expressjs and PostgreSQL.
 - ## Postman collection
-- https://documenter.getpostman.com/view/11631463/UyrDDFxA
+- https://documenter.getpostman.com/view/11631463/UyrGAu2x
 
 - ## How to start?
 
@@ -10,11 +10,8 @@
 
 - ### npm install
 
-- ### npm run migrate
-- #### this migrates the database schemas
-
-- ### npm run seed:all
-- #### this adds the initial user credentials into the database
+- ### npm run db:create
+- #### this creates new database
 
 
 - ### npm run dev

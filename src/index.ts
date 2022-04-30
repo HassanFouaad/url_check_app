@@ -7,11 +7,11 @@ import defaultLogger from "./core/logger";
 const port = config.port;
 const httpServer = createServer(app);
 
-const startServer = async () => {
+const start = async () => {
   await connectToSQLDatabase();
   httpServer.listen(port, () => {
     defaultLogger.info(`Nodejs Application is up and running on port ${port}`);
   });
 };
 
-startServer();
+start();

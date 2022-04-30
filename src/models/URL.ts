@@ -80,7 +80,7 @@ const URL = sequelize.define<URLCheckInstance>(
       allowNull: true,
     },
     tags: {
-      type: DataTypes.JSON,
+      type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: true,
     },
     ignoreSSL: {

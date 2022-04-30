@@ -1,6 +1,9 @@
-import { User } from "../models";
+import { User, URL, URLHistory } from "../models";
+import { URLHistoryRepository, URLRepository } from "./url";
 import { UserRepository } from "./user";
 
 let userRepo = new UserRepository(User);
+let urlHistoryRepo = new URLHistoryRepository(URLHistory);
+let urlRepo = new URLRepository(URL);
 
-export { userRepo };
+export { userRepo, urlHistoryRepo, urlRepo };
