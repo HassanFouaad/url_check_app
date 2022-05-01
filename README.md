@@ -1,6 +1,8 @@
 # URL Checker application
 ### _URL Checker to track your website availability_
 
+## Postman API Documentation collection
+https://documenter.getpostman.com/view/11631463/UyrGAu2x
 ## Features
 - [x] Authentication (Signup/Login)
 - [x] Email verification
