@@ -57,7 +57,7 @@ describe("POST /API/AUTH/REGISTER", () => {
 });
 
 describe("POST /API/AUTH/LOGIN", () => {
-  it("should return 200 && error response if email found", async () => {
+  it("should return 200 && valid response and user token if email and password matches a user", async () => {
     const res = await request(app)
       .post(`/api/auth/login`)
       .send({
