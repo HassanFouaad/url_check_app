@@ -76,7 +76,7 @@ Dockerfile if necessary. When ready, simply use the Dockerfile to
 build the image.
 
 ```sh
-cd dillinger
+cd url_check_app
 docker-compose up -d
 ```
 
