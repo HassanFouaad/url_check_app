@@ -183,7 +183,7 @@ describe("POST /api/url/REPORT", () => {
     expect(url).toHaveProperty("outages");
     expect(url).toHaveProperty("uptime");
     expect(url).toHaveProperty("downTime");
-
+    expect(url).toHaveProperty("avgResponseTime");
     let lastLog = url.logs[0];
     expect(lastLog).toHaveProperty("responseTime");
     expect(lastLog).toHaveProperty("statusCode");
@@ -230,6 +230,7 @@ describe("POST /api/url/REPORT/:urlId", () => {
     expect(res.body.data.urlReport).toHaveProperty("outages");
     expect(res.body.data.urlReport).toHaveProperty("uptime");
     expect(res.body.data.urlReport).toHaveProperty("downTime");
+    expect(res.body.data.urlReport).toHaveProperty("avgResponseTime");
 
     let lastLog = res.body.data.logs[0];
     expect(lastLog).toHaveProperty("responseTime");
