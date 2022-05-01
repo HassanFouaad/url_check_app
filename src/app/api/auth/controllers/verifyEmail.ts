@@ -2,6 +2,7 @@ import { Request } from "express";
 import { EmailVerification } from "../../../../models";
 
 import { userRepo } from "../../../../repositories";
+import { pushover } from "../../../../services/pushover/Pushover";
 
 export const emailVerificationController = async ({ body }: Request) => {
   const { email, vCode } = body;
@@ -63,8 +64,7 @@ export const emailVerificationController = async ({ body }: Request) => {
     };
   }
 
-
-   // UPdating the database
+  // UPdating the database
   await Promise.all([
     await userRepo.updateUser(
       { emailVerified: true },
@@ -82,7 +82,7 @@ export const emailVerificationController = async ({ body }: Request) => {
       }
     ),
   ]);
-
+  let pushoverSubLink = pushover.generateURL(userFound.id);
   /// Returns success to the client
   return {
     message: "Your email has been verified",
@@ -90,6 +90,7 @@ export const emailVerificationController = async ({ body }: Request) => {
       id: userFound.id,
       email: userFound.email,
       username: userFound.username,
+      pushoverSubLink,
     },
   };
 };

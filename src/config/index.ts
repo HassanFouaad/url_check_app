@@ -14,6 +14,9 @@ export interface IConfig {
 
   systemEmail: string;
   systemEmailPassword: string;
+
+  pushOverUser: string;
+  pushOverToken: string;
 }
 
 const config = {
@@ -25,7 +28,11 @@ const config = {
   dbName: process.env.DB_DATABASE as string,
   appTokenSecret: process.env.APP_TOKEN_SECRET,
   appTokenExpiry: process.env.APP_TOKEN_EXPIRY,
-  systemEmail:process.env.SYSTEM_EMAIL,
-  systemEmailPassword:process.env.SYSTEM_EMAIL_PASSWORD
+  systemEmail: process.env.SYSTEM_EMAIL,
+  systemEmailPassword: process.env.SYSTEM_EMAIL_PASSWORD,
+  pushOverUser: process.env.PUSH_OVER_USER as string,
+  pushOverToken: process.env.PUSH_OVER_TOKEN as string,
+  pushOverSubscribeLink: process.env.PUSH_OVER_SUBSCRIBTION_LINK,
+  appDomain: process.env.APP_DOMAIN,
 };
 export default config;

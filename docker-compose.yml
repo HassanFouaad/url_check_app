@@ -29,5 +29,8 @@ services:
       - APP_TOKEN_EXPIRY=30d
       - SYSTEM_EMAIL=bosta.task@gmail.com
       - SYSTEM_EMAIL_PASSWORD=BostaTask@!88
+      - APP_DOMAIN=http://localhost:9000
+      - PUSH_OVER_TOKEN=ah7c5cbzfwhmah2a2y3h4n7gkwaxah
+      - PUSH_OVER_SUBSCRIBTION_LINK=https://pushover.net/subscribe/Bosta-app-uujn8zhebdhy2tt?success=
     ports:
       - "9000:9000"

@@ -23,6 +23,9 @@ export class URLHistoryRepository {
     let url = await this.urlHistoryModel.findOne(query);
     return url;
   }
+  public async findAndCountAllByQuery(query: any) {
+    return await this.urlHistoryModel.findAndCountAll(query);
+  }
 }
 
 export class URLRepository {
@@ -74,5 +77,8 @@ export class URLRepository {
 
   public async findAndCountAllByQuery(query: any) {
     return await this.urlModel.findAndCountAll(query);
+  }
+  public async findOneByQuery(query: any) {
+    return await this.urlModel.findOne(query);
   }
 }

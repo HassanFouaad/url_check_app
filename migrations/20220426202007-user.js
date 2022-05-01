@@ -23,6 +23,7 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },
+      pushoverKey: { type: Sequelize.STRING, allowNull: true },
       createdAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,

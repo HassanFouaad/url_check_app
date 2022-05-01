@@ -7,14 +7,18 @@ import {
   deleteURLSchema,
   readURLSchema,
   updateURLSchema,
+  urlChecksReportListSchema,
+  urlSingleURLReportWithLogsSchema,
 } from "./schema";
 
 import {
   createURLController,
   deleteURLController,
   readURLController,
+  readSingleCOntroller,
   updateURLController,
-  urlChecksReportController,
+  urlChecksReportListController,
+  urlSingleURLReportWithLogsController,
 } from "./controllers";
 import { isAuth } from "../../middlewares/isAuthenticated";
 
@@ -23,7 +27,9 @@ const router = Router();
 const routes = {
   base: "/url",
   root: "/",
-  report: "/report",
+  single: "/:urlId",
+  reportList: "/report",
+  singleReportWithLogs: "/report/:urlId",
 };
 
 const urlBaseRoute = routes.base;
@@ -42,6 +48,13 @@ router.get(
   controller(readURLController)
 );
 
+router.get(
+  routes.single,
+  isAuth,
+  validator({} as any),
+  controller(readSingleCOntroller)
+);
+
 router.delete(
   routes.root,
   isAuth,
@@ -56,6 +69,18 @@ router.put(
   controller(updateURLController)
 );
 
-router.post(routes.report, isAuth, controller(urlChecksReportController));
+router.post(
+  routes.reportList,
+  isAuth,
+  validator(urlChecksReportListSchema),
+  controller(urlChecksReportListController)
+);
+
+router.post(
+  routes.singleReportWithLogs,
+  isAuth,
+  validator(urlSingleURLReportWithLogsSchema),
+  controller(urlSingleURLReportWithLogsController)
+);
 
 export { router as urlRouter, urlBaseRoute };

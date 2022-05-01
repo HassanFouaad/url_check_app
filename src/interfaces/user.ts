@@ -7,8 +7,8 @@ export interface IUser {
   email: string;
   emailVerified: boolean;
   emailVerification?: IEmailVerification[];
+  pushoverKey?: string;
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date | null;
 }
-

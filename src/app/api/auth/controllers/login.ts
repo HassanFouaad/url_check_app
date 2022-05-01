@@ -32,6 +32,7 @@ async function loginController(req: Request) {
         id: user.id,
         username: user.username,
         email: user.email,
+        pushoverkey: user.pushoverKey,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       },

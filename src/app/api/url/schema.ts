@@ -1,6 +1,7 @@
 import Joi from "joi";
 export const readURLSchema: any = {
-  urlId: Joi.number().positive().integer().required(),
+  page: Joi.number().positive().integer(),
+  limit: Joi.number().positive().integer(),
 };
 
 export const createURLSchema: any = {
@@ -71,4 +72,15 @@ export const updateURLSchema: any = {
 
 export const deleteURLSchema: any = {
   urlId: Joi.number().positive().integer().required(),
+};
+
+export const urlChecksReportListSchema: any = {
+  tags: Joi.array().items(Joi.string().max(255).required()),
+  page: Joi.number().positive().integer(),
+  limit: Joi.number().positive().integer(),
+};
+
+export const urlSingleURLReportWithLogsSchema: any = {
+  page: Joi.number().positive().integer(),
+  limit: Joi.number().positive().integer(),
 };

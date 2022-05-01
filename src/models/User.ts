@@ -29,6 +29,7 @@ const User = sequelize.define<UserInstance>(
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
+    pushoverKey: { type: DataTypes.STRING },
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,

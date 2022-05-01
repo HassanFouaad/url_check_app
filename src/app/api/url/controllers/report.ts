@@ -1,7 +1,8 @@
 import { Op } from "sequelize";
 import { IAuthenticatedRequest } from "../../../../interfaces/authUserReq";
+import { IURLHistory } from "../../../../interfaces/urlHistory";
 import { sequelize, URLHistory } from "../../../../models";
-import { urlRepo } from "../../../../repositories";
+import { urlHistoryRepo, urlRepo } from "../../../../repositories";
 import Pagination from "../../../utils/pagination";
 
 interface Report {
@@ -9,6 +10,11 @@ interface Report {
   availability: number;
   lastLogs: any;
 }
+
+interface FormattedLog extends IURLHistory {
+  status: string;
+}
+
 export const reportGenerator = (urlList: any) => {
   let responseReport: Report[] = urlList.map((rawURL: any) => {
     /// JSONFY the model response
@@ -25,23 +31,50 @@ export const reportGenerator = (urlList: any) => {
     let totalChecksCount = rawURL.totalCount;
 
     // If the last history log statuscode is found return and not server error set it as up and running url
-    let currentStatus = (!lastLogStatusCode || lastLogStatusCode > 499 )  ? "DOWN" : "UP";
-
-
-
+    let currentStatus =
+      !lastLogStatusCode || lastLogStatusCode > 499 ? "DOWN" : "UP";
 
     let availability = ((totalUpCount / totalChecksCount) * 100).toFixed(2);
 
     let uptime = (interval * totalUpCount) / 1000;
     let downTime = (interval * outages) / 1000;
 
-    return { currentStatus, availability, outages, uptime, downTime, lastLogs };
+    return {
+      currentStatus,
+      availability,
+      outages,
+      uptime,
+      downTime,
+      logs: formatLogs(lastLogs, rawURL.assert ? true : false),
+    };
   });
 
   return responseReport;
 };
 
-export const urlChecksReportController = async ({
+export const formatLogs = (
+  logs: IURLHistory[],
+  assert: boolean
+): FormattedLog[] => {
+  let newLogs: FormattedLog[] = logs.map((log: any) => {
+    if (log.toJSON) {
+      log = log.toJSON();
+    }
+
+    let status = !log.statusCode || log.statusCode > 499 ? "DOWN" : "UP";
+    let formattedLog = { ...log, status };
+
+    if (!assert) {
+      delete formattedLog.passedAssert;
+    }
+
+    return formattedLog;
+  });
+
+  return newLogs;
+};
+
+export const urlChecksReportListController = async ({
   body,
   user,
 }: IAuthenticatedRequest) => {
@@ -51,7 +84,6 @@ export const urlChecksReportController = async ({
   let paginate = new Pagination(page, limit);
 
   let offset = paginate.getOffset();
-  let queryLimit = paginate.getLimit();
 
   let dbQuery = {
     where: {
@@ -63,11 +95,12 @@ export const urlChecksReportController = async ({
         : {}),
     },
     offset,
-    limit: queryLimit,
+    limit: paginate.getLimit(),
     order: [["id", "desc"]],
     attributes: [
       "id",
       "interval",
+      "assert",
       [
         sequelize.literal(
           `
@@ -124,4 +157,124 @@ export const urlChecksReportController = async ({
     data: reportGenerator(rows),
     meta: paginate.getMetaData(count),
   };
+};
+
+export const urlSingleURLReportWithLogsController = async ({
+  user,
+  body,
+  params,
+}: IAuthenticatedRequest) => {
+  try {
+    let userId = user?.id;
+    let { page, limit }: any = body;
+    let { urlId }: any = params;
+
+    urlId = parseInt(urlId);
+
+    if (isNaN(urlId)) {
+      return {
+        error: "Invalid url id",
+        status: 400,
+      };
+    }
+
+    let reprotQuery = {
+      where: {
+        userId,
+        id: urlId,
+      },
+      attributes: [
+        "id",
+        "interval",
+        "assert",
+        [
+          sequelize.literal(
+            `
+    (
+        select count (id)
+        from "urlHistory"
+        where "urlId" = "URL"."id"
+    )
+    `
+          ),
+          "totalCount",
+        ],
+        [
+          sequelize.literal(
+            `
+    (
+        select count (id)
+        from "urlHistory"
+        where "urlHistory"."urlId" = "URL"."id" and ("urlHistory"."statusCode" is NULL or "urlHistory"."statusCode" > 499) 
+    )
+    `
+          ),
+          "downCount",
+        ],
+        [
+          sequelize.literal(
+            `
+    (
+        select count (id)
+        from "urlHistory"
+        where "urlHistory"."urlId" = "URL"."id" and "urlHistory"."statusCode" is not NULL and "urlHistory"."statusCode" < 499
+    )
+    `
+          ),
+          "upCount",
+        ],
+      ],
+      include: [
+        {
+          model: URLHistory,
+          as: "urlHistories",
+          required: false,
+          limit: 1,
+          order: [["id", "desc"]],
+          attributes: [
+            "responseTime",
+            "statusCode",
+            "passedAssert",
+            "createdAt",
+          ],
+        },
+      ],
+    };
+
+    let url = await urlRepo.findOneByQuery(reprotQuery);
+    if (!url) return { error: "URL is not found", status: 400 };
+
+    let urlReport = reportGenerator([url])[0];
+
+    let paginate = new Pagination(page, limit);
+    let offset = paginate.getOffset();
+
+    let logsQuery = {
+      offset,
+      limit: paginate.getLimit(),
+      where: {
+        urlId,
+      },
+      order: [["id", "desc"]],
+      attributes: ["responseTime", "statusCode", "passedAssert", "createdAt"],
+    };
+
+    let { count, rows: logs } = await urlHistoryRepo.findAndCountAllByQuery(
+      logsQuery
+    );
+
+    return {
+      message: "Successfull read request",
+      data: {
+        urlReport,
+        logs: formatLogs(logs, url.getDataValue("assert") ? true : false),
+      },
+      meta: paginate.getMetaData(count),
+    };
+  } catch (error) {
+    return {
+      error: "Server Error",
+      status: 500,
+    };
+  }
 };

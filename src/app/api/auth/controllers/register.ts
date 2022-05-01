@@ -4,6 +4,7 @@ import { EmailVerification } from "../../../../models";
 
 import { userRepo } from "../../../../repositories";
 import { sendVerificationEMail } from "../../../../services/network/email";
+import { pushover } from "../../../../services/pushover/Pushover";
 
 export const registerController = async ({ body }: Request) => {
   const { username, password, email } = body;
@@ -32,7 +33,6 @@ export const registerController = async ({ body }: Request) => {
   /// Generating the verification code to be sent to the email
   let vCode = String(Math.floor(Math.random() * 90000) + 10000);
 
-
   /// Inserting the new user to the database
   let newUser = await userRepo.createNewUser({
     username,
@@ -51,11 +51,14 @@ export const registerController = async ({ body }: Request) => {
     });
   }
 
+  let pushoverSubLink = pushover.generateURL(newUser.id);
+
   /// Returns success to the client
   return {
     data: {
       email,
       username,
+      pushoverSubLink,
     },
     message:
       "Signed up successfully, Please check your email inbox to verify your account",

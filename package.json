@@ -11,7 +11,7 @@
     "seed:all": "sequelize db:seed:all",
     "db:create": "sequelize db:create",
     "migrate:undo": "sequelize db:migrate:undo",
-    "test:unit": "ENV_FILE=./config/.env.test jest --forceExit --runInBand"
+    "test": "ENV_FILE=./config/.env.test jest --forceExit --runInBand"
   },
   "keywords": [],
   "author": "",
