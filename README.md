@@ -89,6 +89,11 @@ This will create the the application image and pull in the necessary dependencie
 Once done, run the Docker image and map the port to whatever you wish on your host.
 The following command create new postgresql database for you
 
+```sh
+cd url_check_app
+docker exec -it urlcheck_postgres_1 psql -U postgres -c "CREATE DATABASE bosta_task;"
+```
+
 ## Screenshots
 
 #### Passed Auth tests
