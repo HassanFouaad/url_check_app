@@ -26,9 +26,10 @@ export const reportGenerator = (urlList: any) => {
     let lastLogs = rawURL?.urlHistories;
     let lastLogStatusCode = lastLogs[0]?.statusCode;
     let interval = rawURL.interval;
-    let totalUpCount = rawURL.upCount;
-    let outages = rawURL.downCount;
-    let totalChecksCount = rawURL.totalCount;
+    let totalUpCount = rawURL.upCount || 0;
+    let outages = rawURL.downCount || 0;
+    let totalChecksCount = rawURL.totalCount || 0;
+    let avgResponseTime = parseFloat(rawURL.avgResponseTime || 0).toFixed(2);
 
     // If the last history log statuscode is found return and not server error set it as up and running url
     let currentStatus =
@@ -46,6 +47,7 @@ export const reportGenerator = (urlList: any) => {
       uptime,
       downTime,
       logs: formatLogs(lastLogs, rawURL.assert ? true : false),
+      avgResponseTime,
     };
   });
 
@@ -137,6 +139,18 @@ export const urlChecksReportListController = async ({
         ),
         "upCount",
       ],
+      [
+        sequelize.literal(
+          `
+  (
+      select avg("responseTime")
+      from "urlHistory"
+      where "urlId" = "URL"."id"
+  )
+  `
+        ),
+        "avgResponseTime",
+      ],
     ],
     include: [
       {
@@ -222,6 +236,18 @@ export const urlSingleURLReportWithLogsController = async ({
     `
           ),
           "upCount",
+        ],
+        [
+          sequelize.literal(
+            `
+    (
+        select avg("responseTime")
+        from "urlHistory"
+        where "urlId" = "URL"."id"
+    )
+    `
+          ),
+          "avgResponseTime",
         ],
       ],
       include: [
