@@ -46,8 +46,8 @@ export const reportGenerator = (urlList: any) => {
       outages,
       uptime,
       downTime,
-      logs: formatLogs(lastLogs, rawURL.assert ? true : false),
       avgResponseTime,
+      logs: formatLogs(lastLogs, rawURL.assert ? true : false),
     };
   });
 
