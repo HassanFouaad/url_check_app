@@ -23,14 +23,14 @@ services:
       - DB_USERNAME=postgres
       - DB_PORT=5432
       - DB_HOST=postgres
-      - DB_DATABASE=bosta_task
+      - DB_DATABASE=your_db_name
       - REDIS_HOST=redis-server
       - APP_TOKEN_SECRET=tefasfasgehewhweghewjgkwqgoiwgjig2i9gi3gijoadskglasg
       - APP_TOKEN_EXPIRY=30d
-      - SYSTEM_EMAIL=bosta.task@gmail.com
-      - SYSTEM_EMAIL_PASSWORD=BostaTask@!88
+      - SYSTEM_EMAIL=
+      - SYSTEM_EMAIL_PASSWORD=
       - APP_DOMAIN=http://localhost:9000
-      - PUSH_OVER_TOKEN=ah7c5cbzfwhmah2a2y3h4n7gkwaxah
-      - PUSH_OVER_SUBSCRIBTION_LINK=https://pushover.net/subscribe/Bosta-app-uujn8zhebdhy2tt?success=
+      - PUSH_OVER_TOKEN=
+      - PUSH_OVER_SUBSCRIBTION_LINK=
     ports:
       - "9000:9000"
