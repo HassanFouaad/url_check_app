@@ -90,7 +90,7 @@ Once done, run the Docker image and map the port to whatever you wish on your ho
 The following command create new postgresql database for you
 
 ```sh
-docker exec -it urlcheck_postgres_1 psql -U postgres -c "CREATE DATABASE bosta_task;"
+docker exec -it urlcheck_postgres_1 psql -U postgres -c "CREATE DATABASE your_db_name;"
 ```
 
 ## Screenshots
